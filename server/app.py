@@ -62,7 +62,7 @@ def all_books():
 
 
 # Book ID route
-@app.route("/books/<book_id>", methods=["PUT"])
+@app.route("/books/<book_id>", methods=["PUT", "DELETE"])
 def single_book(book_id):
     response_object = {"status": "success"}
     if request.method == "PUT":
@@ -78,6 +78,9 @@ def single_book(book_id):
             }
         )
         response_object["message"] = "Book updated!"
+    if request.method == "DELETE":
+        remove_book(book_id)
+        response_object["message"] = "Book removed!"
     return jsonify(response_object)
 
 

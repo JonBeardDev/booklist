@@ -42,7 +42,11 @@
                   >
                     Update
                   </button>
-                  <button type="button" class="btn btn-danger btn-sm mx-2">
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-sm mx-2"
+                    @click="handleDeleteBook(book)"
+                  >
                     Delete
                   </button>
                 </div>
@@ -289,6 +293,20 @@ export default {
           this.getBooks();
         });
     },
+    removeBook(bookID) {
+      const path = `http://localhost:5000/books/${bookID}`;
+      axios
+        .delete(path)
+        .then(() => {
+          this.getBooks();
+          this.message = "Book removed!";
+          this.showMessage = true;
+        })
+        .catch((error) => {
+          console.error(error);
+          this.getBooks();
+        });
+    },
     getBooks() {
       const path = "http://localhost:5000/books";
       axios
@@ -334,6 +352,9 @@ export default {
       this.toggleEditBookModal(null);
       this.initForm();
       this.getBooks();
+    },
+    handleDeleteBook(book) {
+      this.removeBook(book.id);
     },
     initForm() {
       this.addBookForm.title = "";
